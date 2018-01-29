@@ -2,7 +2,9 @@ import React from 'react';
 
 const Answer = ({ answer }) => {
     return (
-        <p>{answer.text}</p>
+        <div class="answer">
+            <blockquote>"{answer.text}"</blockquote>
+        </div>
     )
 }
 

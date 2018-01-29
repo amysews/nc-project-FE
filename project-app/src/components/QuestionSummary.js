@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 
 const QuestionSummary = ({ question }) => {
     return (
-        <li>
-            <Link to={'/questions/' + question.id} ><h5>{question.text}</h5></Link>
+        <li id="question-summary">
+            <Link to={'/questions/' + question.id} >
+                <blockquote>"{question.text}"</blockquote>
+            </Link>
         </li>
     )
 }

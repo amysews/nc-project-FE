@@ -1,4 +1,4 @@
-const URL = "http://localhost:9090";
+const URL = "http://localhost:9091";
 
 exports.fetchAllQuestions = () => {
     let questionsMetaData;
@@ -6,6 +6,7 @@ exports.fetchAllQuestions = () => {
     .then(resBuffer => resBuffer.json())
     .then(data => {
         questionsMetaData = data.questions;
+        console.log(questionsMetaData);
         const promises = questionsMetaData.filter(question => question.text_in_bucket).map(question => {
             // then fetch the text file out of the bucket using the Q_ID
             return fetch(`${URL}/s3/textstorage?keyName=q${question.id}`).then(buffer => buffer.json())

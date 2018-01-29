@@ -21,8 +21,8 @@ class AddQuestionForm extends React.Component {
 			<form id="add-question">
 				<h1>Add a new question</h1>
 
-				<div class="field">
-					<div class="control">
+				<div className="field">
+					<div className="control">
 						<span onClick={this.useVoice} >Add with voice</span>
 						{'  |  '}
 						<span onClick={this.useText} >Add with text</span>
@@ -30,10 +30,10 @@ class AddQuestionForm extends React.Component {
 				</div>
 
 
-				<div class="field">
-					<label class="label">User:</label>
-					<div class="control">
-						<div class="select">
+				<div className="field">
+					<label className="label">User:</label>
+					<div className="control">
+						<div className="select">
 							<select name="user">
 								{questioners.map((questioner, i) => {
 									return <option key={i} value={questioner.id}>{questioner.first_name} {questioner.surname}</option>
@@ -46,28 +46,31 @@ class AddQuestionForm extends React.Component {
 
 				{addText ?
 					(
-						<div class="field">
-							<label class="label">Question:</label>
-							<div class="control">
-								<textarea class="textarea" name="questionText" placeholder="Type your question here"></textarea>
+						<div className="field">
+							<label className="label">Question:</label>
+							<div className="control">
+								<textarea className="textarea" name="questionText" placeholder="Type your question here"></textarea>
 							</div>
 						</div>
 					) : null}
 
 				{addAudio ?
 					(
-						<div class="field">
-							<label class="label">Question:</label>
-							<div class="control">
+						<div className="field">
+							<label className="label">Question:</label>
+							<div className="control">
 								<AudioRecording />
 							</div>
 						</div>
 					) : null}
 
-				<div class="field">
-					<label class="label">Topic:</label>
-					<div class="control">
-						<div class="select">
+				{/* <AudioRecording audio={audio} sendAudioBlob={this.sendAudioBlob} /> */}
+
+
+				<div className="field">
+					<label className="label">Topic:</label>
+					<div className="control">
+						<div className="select">
 							<select name="topic">
 								<option value="Past">Past</option>
 								<option value="Advice">Advice</option>
@@ -78,13 +81,9 @@ class AddQuestionForm extends React.Component {
 				</div>
 
 
-				{/* <AudioRecording audio={audio} sendAudioBlob={this.sendAudioBlob} /> */}
-				{/* <AudioRecording /> */}
-
-
-				<div class="field">
-					<div class="control">
-						<button class="button is-link">Submit</button>
+				<div className="field">
+					<div className="control">
+						<button className="button is-link">Submit</button>
 					</div>
 				</div>
 			</form>

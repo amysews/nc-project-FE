@@ -1,12 +1,11 @@
-#root {
-    display: grid;
-    /* grid-template-rows: 20px; */
-}
-
 h1 {
     font-size: 2em;
-    margin-top: 10px;
     margin-bottom: 20px;
+}
+
+blockquote {
+    font-style: italic;
+    font-size: 1.2em;
 }
 
 nav {
@@ -15,13 +14,8 @@ nav {
     overflow: hidden;
     border: 1px solid #e7e7e7;
     background-color: #f3f3f3;
-    /* position: fixed; */
     top: 0;
     width: 100%;
-}
-
-.container {
-    width: 80%;
 }
 
 .nav-item {
@@ -37,10 +31,27 @@ nav {
     background-color: #dfdede;
 }
 
-#add-question {
+.container {
+    width: 80%;   
+}
+
+#add-question, #question-full {
     width: 60%;
     margin: 40px auto;
     border: 1px solid #e7e5e5;
     border-radius: 5px;
     padding: 30px;
+}
+
+#question-list, #answer-list {
+    width: 80%;
+    margin: 10px auto;
+}
+ 
+#question-summary, .answer {
+    border: 1px solid #e7e5e5;
+    border-radius: 5px;
+    padding: 30px;
+    /* width: 80%; */
+    margin: 10px auto;
 }
