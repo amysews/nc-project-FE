@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
+import AddQuestionForm from '../components/AddQuestionForm';
 import QuestionList from '../components/QuestionList';
+import { fetchAllQuestions } from '../api';
 
 class BrowsePage extends Component {
 	state = {
-		questions: [{text: "Example question 1"}, {text: "Example question 2"}, {text: "Example question 3"}]
+		questions: []
+	}
+
+	componentDidMount() {
+		fetchAllQuestions()
+			.then(questions => this.setState({ questions }))
 	}
 
 	render() {
 		const { questions } = this.state;
 		return (
-			<QuestionList questions={questions} />
+			<div>
+				<AddQuestionForm />
+				<QuestionList questions={questions} />
+			</div>
 		)
 	}
 }
