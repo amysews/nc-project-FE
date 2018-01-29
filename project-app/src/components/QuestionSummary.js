@@ -8,6 +8,7 @@ const QuestionSummary = ({ question }) => {
             <Link to={'/questions/' + question.id} >
                 <blockquote>"{question.text}"</blockquote>
             </Link>
+                { question.mp3_in_bucket ? <audio controls /> : null }
         </li>
     )
 }

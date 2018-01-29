@@ -5,7 +5,13 @@ h1 {
 
 blockquote {
     font-style: italic;
-    font-size: 1.2em;
+    font-size: 1.3em;
+}
+
+.subtitle {
+    margin-top: 10px;
+    font-size: 1em;
+    color: grey;
 }
 
 nav {
