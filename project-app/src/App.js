@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import BrowsePage from './pages/BrowsePage';
 import QA_Page from './pages/QA_Page';
+import 'bulma/css/bulma.css';
+import './styles.css';
 
 class App extends Component {
   render() {

@@ -16,7 +16,7 @@ class BrowsePage extends Component {
 	render() {
 		const { questions } = this.state;
 		return (
-			<div>
+			<div className="container">
 				<AddQuestionForm />
 				<QuestionList questions={questions} />
 			</div>
