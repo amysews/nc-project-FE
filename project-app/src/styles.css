@@ -41,7 +41,7 @@ nav {
     width: 80%;   
 }
 
-#add-question, #question-full {
+#add-question, #add-answer, #question-full {
     width: 60%;
     margin: 40px auto;
     border: 1px solid #e7e5e5;

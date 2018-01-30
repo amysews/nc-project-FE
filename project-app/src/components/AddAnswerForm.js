@@ -57,7 +57,7 @@ class AddAnswerForm extends React.Component {
 		return (
 			<div>
 				<form id="add-answer" onSubmit={this.handleSubmit}>
-					<h1>Add a new answer</h1>
+					<h1>Add a new answer:</h1>
 
 					<div className="field">
 						<div className="control">
