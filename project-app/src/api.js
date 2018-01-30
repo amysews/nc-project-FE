@@ -118,16 +118,15 @@ export const postQuestionToBucket = (questionText, id) => {       //put question
 		return getSignedURL(id)
 			.then(data => data.json())
 			.then(res => {
-				// const audioBlob = new Blob(questionText);
+				const audioBlob = new Blob(questionText);
 				return fetch(res.signedUrl, {
 					method: 'PUT',
-					// body: audioBlob,
-					body: questionText
+					body: audioBlob,
+					// body: questionText
 				})
 			})
 			.then(res => {
 				console.log(res)
-				return res.json()
 			})
 	}
 }
