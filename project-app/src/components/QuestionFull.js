@@ -1,8 +1,13 @@
 import React from 'react';
 import moment from 'moment';
+// import { fetchAudioSrc } from '../api';
 
 const QuestionFull = ({ question }) => {
+    
     if (question.user) {
+        // if (question.mp3_in_bucket) {
+        //     const audioSrc = fetchAudioSrc(question.id);
+        // }
     return (
         <div id="question-full">
             <h1>Question:</h1>
