@@ -1,6 +1,6 @@
 import React from 'react';
 import AudioRecording from './AudioRecording';
-import { fetchQuestioners, getSignedURL, postQuestionToBucket, postTopicMetadata } from '../api';
+import { fetchQuestioners, postToBucket, postQuestionMetadata } from '../api';
 
 class AddQuestionForm extends React.Component {
 	state = {
@@ -25,14 +25,11 @@ class AddQuestionForm extends React.Component {
 	// This should be true for text input or audio input
 	handleSubmit = (event) => {
 		event.preventDefault();
-
 		const { userId, topic, question } = this.state;
-
 		if (!userId || !topic || !question) return;
-
-		return postTopicMetadata(topic, userId)
+		return postQuestionMetadata(topic, userId)
 			.then(({ questionId }) => {
-				return postQuestionToBucket(question, questionId)
+				return postToBucket(question, questionId, 'q')
 			})
 			.then(data => {
 				console.log(data)
@@ -42,23 +39,24 @@ class AddQuestionForm extends React.Component {
 	}
 
 	handleUserChange = (event) => {
-		this.setState({
-			userId: event.target.value
-		})
+		this.setState({ userId: event.target.value })
 	}
 	handleQuestionChange = (event) => {
-		this.setState({
-			question: event.target.value
-		})
+		this.setState({ question: event.target.value })
 	}
 	handleTopicChange = (event) => {
-		this.setState({
-			topic: event.target.value
-		})
+		this.setState({ topic: event.target.value })
+	}
+	useVoice = () => {
+		this.setState({ addAudio: true, addText: false })
+	}
+
+	useText = () => {
+		this.setState({ addText: true, addAudio: false })
 	}
 
 	render() {
-		const { questioners, audio, addAudio, addText, submitted, userId, topic, question } = this.state;
+		const { questioners, addAudio, addText, submitted, userId, topic, question } = this.state;
 		return (
 			<div>
 				<form id="add-question" onSubmit={this.handleSubmit}>
@@ -108,8 +106,6 @@ class AddQuestionForm extends React.Component {
 							</div>
 						) : null}
 
-					{/* <AudioRecording audio={audio} sendAudioBlob={this.sendAudioBlob} /> */}
-
 
 					<div className="field">
 						<label className="label">Topic:</label>
@@ -136,28 +132,6 @@ class AddQuestionForm extends React.Component {
 			</div>
 		)
 	}
-
-	useVoice = () => {
-		this.setState({ addAudio: true, addText: false })
-	}
-
-	useText = () => {
-		this.setState({ addText: true, addAudio: false })
-	}
-
-	// sendBlob = () => {
-	// 	this.getSignedURL(filename) // this needs to come from the first put to db
-	// 		.then(data => data.json())
-	// 		.then(res => {
-	// 			const audioBlob = new Blob(this.state.chunks);
-	// 			return fetch(res.signedUrl, {
-	// 				method: 'PUT',
-	// 				body: audioBlob
-	// 			})
-	// 		})
-	// 		.then(console.log)
-	// 		.catch(console.log)
-	// }
 }
 
 export default AddQuestionForm;

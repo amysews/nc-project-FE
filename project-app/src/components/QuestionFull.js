@@ -14,7 +14,7 @@ const QuestionFull = ({ question }) => {
 
             <blockquote>"{question.text}"</blockquote>
             { question.mp3_in_bucket ? <audio controls /> : null }
-            <p class="subtitle">Submitted by {question.user.first_name} {question.user.surname} at {moment(question.time_stamp).format('h:mm:ss a dddd Do MMMM YYYY')}</p>
+            <p className="subtitle">Submitted by {question.user.first_name} {question.user.surname} at {moment(question.time_stamp).format('h:mm:ss a dddd Do MMMM YYYY')}</p>
         </div>
     ) } else return <div></div>;
 }

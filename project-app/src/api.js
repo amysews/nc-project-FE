@@ -83,11 +83,16 @@ export const fetchQuestioners = () => {
 		})
 }
 
-// export const fetchAudioSrc = (id) => {
+export const fetchAnswerers = () => {
+	return fetch(`${URL}/rds/users`)
+		.then(buffer => buffer.json())
+		.then(({ users }) => {
+			const answerers = users.filter(user => user.answerer)
+			return answerers;
+		})
+}
 
-// }
-
-export const postTopicMetadata = (topic, user_id) => {
+export const postQuestionMetadata = (topic, user_id) => {
 	return fetch(`${URL}/rds/questions`, {
 		method: 'PUT',
 		body: JSON.stringify({ user_id, topic, keywords: topic, answered: 1 }),
@@ -95,17 +100,25 @@ export const postTopicMetadata = (topic, user_id) => {
 			'Content-Type': 'application/json'
 		})
 	})
-		.then(res => {
-			return res.json()
-		})
-
+		.then(res => res.json())
 }
 
-export const postQuestionToBucket = (questionText, id) => {       //put question text into bucket.  File is delivered but undefined
-	if (typeof questionText === "string") { // inputted as text
+export const postAnswerMetadata = (user_id, question_id) => {
+	return fetch(`${URL}/rds/answers`, {//
+		method: 'PUT',
+		body: JSON.stringify({ user_id, question_id }),
+		headers: new Headers({
+			'Content-Type': 'application/json'
+		})
+	})
+		.then(res => res.json())
+}
+
+export const postToBucket = (data, id, type) => { 
+	if (typeof data === "string") { // inputted as text
 		return fetch(`${URL}/s3/textstorage`, {
 			method: 'PUT',
-			body: JSON.stringify({ questionText, id }),
+			body: JSON.stringify({ data, id, type }),
 			headers: new Headers({
 				'Content-Type': 'application/json'
 			})
@@ -115,14 +128,13 @@ export const postQuestionToBucket = (questionText, id) => {       //put question
 				return res.json()
 			})
 	} else { // inputted as Audio
-		return getSignedURL(id)
-			.then(data => data.json())
+		return getSignedURL(type, id)
+			.then(buffer => buffer.json())
 			.then(res => {
-				const audioBlob = new Blob(questionText);
+				const audioBlob = new Blob(data);
 				return fetch(res.signedUrl, {
 					method: 'PUT',
-					body: audioBlob,
-					// body: questionText
+					body: audioBlob
 				})
 			})
 			.then(res => {
@@ -131,8 +143,8 @@ export const postQuestionToBucket = (questionText, id) => {       //put question
 	}
 }
 
-export const getSignedURL = (filename) => {
-	return fetch(`${URL}/s3/sign?objectName=q${filename}`)
+export const getSignedURL = (prefix, id) => {
+	return fetch(`${URL}/s3/sign?objectName=${id}&prefix=${prefix}`)
 }
 
 export const fetchUsers = () => {
