@@ -5,13 +5,13 @@ import { fetchQuestioners, getSignedURL, postQuestionToBucket, postTopicMetadata
 class AddQuestionForm extends React.Component {
 	state = {
 		questioners: [],
-		audio: null,
+		audio: null, // might not be needed
 		addAudio: null,
 		addText: null,
 		submitted: false,
 		userId: '',
 		topic: '',
-		question: ''
+		question: '' // will either be text string or audio Blob
 	}
 
 	componentDidMount() {
@@ -19,6 +19,7 @@ class AddQuestionForm extends React.Component {
 			.then(questioners => this.setState({ questioners }))
 	}
 
+	// This is be true for text input or audio input
 	handleSubmit = (event) => {
 		event.preventDefault();
 
@@ -99,7 +100,7 @@ class AddQuestionForm extends React.Component {
 							<div className="field">
 								<label className="label">Question:</label>
 								<div className="control">
-									{/* <AudioRecording /> */}
+									<AudioRecording />
 								</div>
 							</div>
 						) : null}

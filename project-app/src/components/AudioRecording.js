@@ -49,13 +49,13 @@ class AudioRecording extends React.Component {
 	// getSignedURL = () => { return fetch('http://localhost:3002/s3/sign?objectName=robotmitch') }
 
 	startRecording = (e) => {
-        e.preventDefault();
-        console.log('start the recording...');
+		e.preventDefault();
+		console.log('start the recording...');
 		// this.state.audioRecorder.start();
 	}
 
 	stopRecording = (e) => {
-        e.preventDefault();        
+		e.preventDefault();
 		console.log('stop the recording...');
 		// this.state.audioRecorder.stop();
 	}
@@ -65,14 +65,14 @@ class AudioRecording extends React.Component {
 		const { src } = this.state;
 		return (
 			<div>
-                <button className="button is-danger is-rounded" onClick={this.startRecording} >Start Recording</button>
-                <button className="button is-rounded" onClick={this.stopRecording} >Stop Recording</button>
-                
-                <br/>
+				<button className="button is-danger is-rounded" onClick={this.startRecording} >Start Recording</button>
+				<button className="button is-rounded" onClick={this.stopRecording} >Stop Recording</button>
+
+				<br />
 				<audio controls src={src} />
 				{/* <button type="start" onClick={this.startRecording} >Start</button>
                 <button type="stop" onClick={this.stopRecording} >Stop</button> */}
-                
+
 			</div>
 		)
 	}
