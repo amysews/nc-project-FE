@@ -17,8 +17,6 @@ class App extends Component {
 						{/* <Route exact path="/users" component={Users}></Route> */}
 						<Route exact path="/questions" component={BrowsePage}></Route>
 						<Route exact path="/questions/:question_id" component={QA_Page}></Route>
-						{/* <Route exact path="/submitQuestion" component={SubmitQuestionAudio}></Route> */}
-						{/* <Route exact path="/submitQuestion" component={SubmitQuestion}></Route> */}
 					</Switch>
 				</div>
 			</BrowserRouter>

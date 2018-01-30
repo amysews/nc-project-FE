@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import QuestionFull from '../components/QuestionFull';
+import AddAnswerForm from '../components/AddAnswerForm';
 import AnswerList from '../components/AnswerList';
 import { fetchOneQuestionAndAnswers } from '../api';
 
@@ -17,8 +18,9 @@ class QA_Page extends Component {
 	render() {
 		const { question, answers } = this.state;
 		return (
-			<div class="container">
+			<div className="container">
 				<QuestionFull question={question} />
+				<AddAnswerForm questionId={question.id} />
 				<AnswerList answers={answers} />
 			</div>
 
