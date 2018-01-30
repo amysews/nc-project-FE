@@ -1,27 +1,27 @@
-const URL = "http://localhost:9091";
+const URL = "http://localhost:9090";
 
-exports.fetchAllQuestions = () => {
+export const fetchAllQuestions = () => {
     let questionsMetaData;
     return fetch(`${URL}/rds/questions`)
-    .then(resBuffer => resBuffer.json())
-    .then(data => {
-        questionsMetaData = data.questions;
-        console.log(questionsMetaData);
-        const promises = questionsMetaData.filter(question => question.text_in_bucket).map(question => {
-            // then fetch the text file out of the bucket using the Q_ID
-            return fetch(`${URL}/s3/textstorage?keyName=q${question.id}`).then(buffer => buffer.json())
+        .then(resBuffer => resBuffer.json())
+        .then(data => {
+            questionsMetaData = data.questions;
+            console.log(questionsMetaData);
+            const promises = questionsMetaData.filter(question => question.text_in_bucket).map(question => {
+                // then fetch the text file out of the bucket using the Q_ID
+                return fetch(`${URL}/s3/textstorage?keyName=q${question.id}`).then(buffer => buffer.json())
+            })
+            return Promise.all(promises);
         })
-        return Promise.all(promises);
-    })
-    .then(questionText => {
-        questionsMetaData.forEach((question, i) => {
-            questionsMetaData[i]["text"] = questionText[i].text
+        .then(questionText => {
+            questionsMetaData.forEach((question, i) => {
+                questionsMetaData[i]["text"] = questionText[i].text
+            })
+            return questionsMetaData;
         })
-        return questionsMetaData;
-    })
 }
 
-exports.fetchOneQuestionAndAnswers = (id) => {
+export const fetchOneQuestionAndAnswers = (id) => {
     let questionMetaData;
     let answerMetaData;
     // Fetches question meta data
@@ -74,15 +74,53 @@ exports.fetchOneQuestionAndAnswers = (id) => {
         })
 }
 
-exports.fetchQuestioners = () => {
+export const fetchQuestioners = () => {
     return fetch(`${URL}/rds/users`)
-    .then(buffer => buffer.json())
-    .then(({users}) => {
-        const questioners = users.filter(user => user.questioner)
-        return questioners;
-    })
+        .then(buffer => buffer.json())
+        .then(({ users }) => {
+            const questioners = users.filter(user => user.questioner)
+            return questioners;
+        })
 }
 
-exports.getSignedURL = (filename) => { 
-    return fetch(`${URL}/s3/sign?objectName=${filename}`) 
+export const getSignedURL = (filename) => {
+    return fetch(`${URL}/s3/sign?objectName=${filename}`)
+}
+
+// export const fetchAudioSrc = (id) => {
+
+// }
+
+export const postTopicMetadata = (topic, user_id) => {
+    return fetch(`${URL}/rds/questions`, {
+        method: 'PUT',
+        body: JSON.stringify({ user_id, topic, keywords: topic, answered: 1 }),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    })
+        .then(res => {
+            return res.json()
+        })
+
+}
+
+export const postQuestionToBucket = (questionText, id) => {       //put question text into bucket.  File is delivered but undefined
+    return fetch(`${URL}/s3/textstorage`, {
+        method: 'PUT',
+        body: JSON.stringify({ questionText, id }),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    })
+        .then(res => {
+            console.log(res)
+            return res.json()
+        })
+
+}
+
+export const fetchUsers = () => {
+    return fetch(`${URL}/rds/users`)
+        .then(buffer => buffer.json())
 }
