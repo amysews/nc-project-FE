@@ -5,7 +5,6 @@ import { fetchQuestioners, getSignedURL, postQuestionToBucket, postTopicMetadata
 class AddQuestionForm extends React.Component {
 	state = {
 		questioners: [],
-		audio: null,
 		addAudio: null,
 		addText: null,
 		submitted: false,
@@ -19,6 +18,11 @@ class AddQuestionForm extends React.Component {
 			.then(questioners => this.setState({ questioners }))
 	}
 
+	handleIncomingAudio = (event) => {
+		this.setState({ question: [event.data] })
+	}
+
+	// This should be true for text input or audio input
 	handleSubmit = (event) => {
 		event.preventDefault();
 
@@ -99,7 +103,7 @@ class AddQuestionForm extends React.Component {
 							<div className="field">
 								<label className="label">Question:</label>
 								<div className="control">
-									{/* <AudioRecording /> */}
+									<AudioRecording handleIncomingAudio={this.handleIncomingAudio} />
 								</div>
 							</div>
 						) : null}
