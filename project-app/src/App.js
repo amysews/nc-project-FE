@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
 import BrowsePage from './pages/BrowsePage';
 import QA_Page from './pages/QA_Page';
+import fourOFour from './components/fourOFour'
 import 'bulma/css/bulma.css';
 import './styles.css';
 
@@ -22,6 +23,7 @@ class App extends Component {
 						{/* <Route exact path="/users" component={Users}></Route> */}
 						<Route exact path="/questions" render={() => <BrowsePage loggedInUser = {this.state.loggedInUser}/>}></Route>
 						<Route exact path="/questions/:question_id" render={(props) => <QA_Page loggedInUser = {this.state.loggedInUser}{...props}/>}></Route>
+						<Route component={fourOFour}></Route>
 					</Switch>
 				</div>
 			</BrowserRouter>
