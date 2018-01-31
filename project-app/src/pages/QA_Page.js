@@ -17,13 +17,14 @@ class QA_Page extends Component {
 
 	render() {
 		const { question, answers } = this.state;
+	
 		return (
 			<div className="container">
 				<QuestionFull question={question} />
-				<AddAnswerForm questionId={question.id} />
+				{this.props.loggedInUser.answerer ? <AddAnswerForm questionId={question.id} loggedInUser = {this.props.loggedInUser}  /> :null }   
 				<AnswerList answers={answers} />
 			</div>
-
+	// not working  
 		)
 	}
 }

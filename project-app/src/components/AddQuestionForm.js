@@ -1,10 +1,9 @@
 import React from 'react';
 import AudioRecording from './AudioRecording';
-import { fetchQuestioners, postToBucket, postQuestionMetadata } from '../api';
+import { postToBucket, postQuestionMetadata } from '../api';
 
 class AddQuestionForm extends React.Component {
 	state = {
-		questioners: [],
 		addAudio: null,
 		addText: null,
 		submitted: false,
@@ -13,9 +12,9 @@ class AddQuestionForm extends React.Component {
 		question: ''
 	}
 
-	componentDidMount() {
-		fetchQuestioners()
-			.then(questioners => this.setState({ questioners }))
+	componentWillReceiveProps(newProps) {
+	
+				this.setState({userId: newProps.loggedInUser.id })
 	}
 
 	handleIncomingAudio = (event) => {
@@ -38,9 +37,6 @@ class AddQuestionForm extends React.Component {
 			.catch(console.error)
 	}
 
-	handleUserChange = (event) => {
-		this.setState({ userId: event.target.value })
-	}
 	handleQuestionChange = (event) => {
 		this.setState({ question: event.target.value })
 	}
@@ -56,7 +52,7 @@ class AddQuestionForm extends React.Component {
 	}
 
 	render() {
-		const { questioners, addAudio, addText, submitted, userId, topic, question } = this.state;
+		const { addAudio, addText, submitted, topic, question } = this.state;
 		return (
 			<div>
 				<form id="add-question" onSubmit={this.handleSubmit}>
@@ -71,19 +67,11 @@ class AddQuestionForm extends React.Component {
 					</div>
 
 
-					<div className="field">
-						<label className="label">User:</label>
-						<div className="control">
-							<div className="select">
-								<select name="user" onChange={this.handleUserChange} value={userId}>
-									<option value="" disabled>Select your option</option>
-									{questioners.map((questioner, i) => {
-										return <option key={i} value={questioner.id}>{questioner.first_name} {questioner.surname}</option>
-									})}
-								</select>
-							</div>
-						</div>
+
+					<div>
+						<p>You are logged in as {this.props.loggedInUser.first_name} {this.props.loggedInUser.surname}</p>
 					</div>
+
 
 
 					{addText ?

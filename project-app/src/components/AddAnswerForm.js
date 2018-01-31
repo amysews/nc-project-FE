@@ -1,10 +1,9 @@
 import React from 'react';
 import AudioRecording from './AudioRecording';
-import { fetchAnswerers, postToBucket, postAnswerMetadata } from '../api';
+import { postToBucket, postAnswerMetadata } from '../api';
 
 class AddAnswerForm extends React.Component {
 	state = {
-		answerers: [],
 		addAudio: null,
 		addText: null,
 		submitted: false,
@@ -13,10 +12,9 @@ class AddAnswerForm extends React.Component {
     questionId: ''
 	}
 
-	componentWillReceiveProps () {
-    console.log(this.props.questionId)
-		fetchAnswerers()
-			.then(answerers => this.setState({ answerers, questionId: this.props.questionId }))
+	componentWillReceiveProps (newProps) {
+	
+	this.setState({ questionId: newProps.questionId, userId: newProps.loggedInUser.id })
 	}
 
 	handleIncomingAudio = (event) => {
@@ -39,9 +37,7 @@ class AddAnswerForm extends React.Component {
 			.catch(console.error)
 	}
 
-	handleUserChange = (event) => {
-		this.setState({ userId: event.target.value })
-	}
+	
 	handleAnswerChange = (event) => {
 		this.setState({ answer: event.target.value })
 	}
@@ -53,7 +49,7 @@ class AddAnswerForm extends React.Component {
 	}
 
 	render() {
-		const { answerers, addAudio, addText, submitted, userId, answer } = this.state;
+		const {addAudio, addText, submitted, answer } = this.state;
 		return (
 			<div>
 				<form id="add-answer" onSubmit={this.handleSubmit}>
@@ -67,19 +63,8 @@ class AddAnswerForm extends React.Component {
 						</div>
 					</div>
 
-
-					<div className="field">
-						<label className="label">User:</label>
-						<div className="control">
-							<div className="select">
-								<select name="user" onChange={this.handleUserChange} value={userId}>
-									<option value="" disabled>Select your option</option>
-									{answerers.map((answerer, i) => {
-										return <option key={i} value={answerer.id}>{answerer.first_name} {answerer.surname}</option>
-									})}
-								</select>
-							</div>
-						</div>
+					<div>
+						<p>You are logged in as {this.props.loggedInUser.first_name} {this.props.loggedInUser.surname}</p>
 					</div>
 
 
