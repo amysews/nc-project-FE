@@ -13,7 +13,7 @@ const QuestionFull = ({ question }) => {
             <h1>Question:</h1>
 
             <blockquote>"{question.text}"</blockquote>
-            { question.mp3_in_bucket ? <audio controls /> : null }
+            { question.mp3_in_bucket ? <audio src={`https://s3.us-east-2.amazonaws.com/mp3audiostorage-northcoders/q${question.id}.mp3`} controls /> : null }
             <p className="subtitle">Submitted by {question.user.first_name} {question.user.surname} at {moment(question.time_stamp).format('h:mm:ss a dddd Do MMMM YYYY')}</p>
         </div>
     ) } else return <div></div>;
