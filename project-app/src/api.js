@@ -92,6 +92,14 @@ export const fetchAnswerers = () => {
 		})
 }
 
+export const fetchUsers = () => {
+	return fetch(`${URL}/rds/users`)
+		.then(buffer => buffer.json())
+		.then(({ users }) => {
+			return users;
+		})
+}
+
 export const postQuestionMetadata = (topic, user_id) => {
 	return fetch(`${URL}/rds/questions`, {
 		method: 'PUT',
@@ -145,9 +153,4 @@ export const postToBucket = (data, id, type) => {
 
 export const getSignedURL = (prefix, id) => {
 	return fetch(`${URL}/s3/sign?objectName=${id}&prefix=${prefix}`)
-}
-
-export const fetchUsers = () => {
-	return fetch(`${URL}/rds/users`)
-		.then(buffer => buffer.json())
 }
