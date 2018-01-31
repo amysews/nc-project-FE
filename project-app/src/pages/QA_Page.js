@@ -21,10 +21,9 @@ class QA_Page extends Component {
 		return (
 			<div className="container">
 				<QuestionFull question={question} />
-				{this.props.loggedInUser.answerer ? <AddAnswerForm questionId={question.id} loggedInUser = {this.props.loggedInUser}  /> :null }   
+				{this.props.loggedInUser && this.props.loggedInUser.answerer ? <AddAnswerForm questionId={question.id} loggedInUser = {this.props.loggedInUser}  /> :null }   
 				<AnswerList answers={answers} />
 			</div>
-	// not working  
 		)
 	}
 }

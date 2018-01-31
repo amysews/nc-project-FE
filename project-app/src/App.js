@@ -21,7 +21,6 @@ class App extends Component {
 					<Navbar loggedInUser={this.state.loggedInUser} />
 					<Switch>
 						<Route exact path="/" render={() => <LoginPage setAppUser={this.setAppUser} />}></Route>
-						{/* <Route exact path="/users" component={Users}></Route> */}
 						<Route exact path="/dashboard" render={() => <Dashboard loggedInUser = {this.state.loggedInUser}/>}></Route>
 						<Route exact path="/questions" render={() => <BrowsePage loggedInUser = {this.state.loggedInUser}/>}></Route>
 						<Route exact path="/questions/:question_id" render={(props) => <QA_Page loggedInUser = {this.state.loggedInUser}{...props}/>}></Route>
