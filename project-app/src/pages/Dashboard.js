@@ -7,45 +7,48 @@ class Dashboard extends React.Component {
   state = {
     loggedInUser: {},
     userQuestions: [],
-    unansweredQuestions: []
+    unansweredQuestions: [],
+    userAnswers: [],
+    loading: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { loggedInUser } = this.props;
     fetchUserQAs(loggedInUser)
-      .then(({ userQuestions, unansweredQuestions }) => {
+      .then(({ userQuestions, unansweredQuestions, userAnswers }) => {
         if (loggedInUser.questioner) { // if questioner then set to state the questions you've asked
-          this.setState({ userQuestions, loggedInUser })
+          this.setState({ userQuestions, loggedInUser, loading: false })
         } else { // if answerer then set to state the questions without answers yet and the questions you've answered
-          this.setState({ userQuestions, loggedInUser, unansweredQuestions })
+          this.setState({ userAnswers, loggedInUser, unansweredQuestions, loading: false })
         }
       });
   }
 
-  render () {
-    const { loggedInUser, userQuestions, unansweredQuestions } = this.state;
-    return (
-      <div>
-        <h1>Welcome, {loggedInUser.first_name}</h1>
-  
-        {loggedInUser.questioner ? 
-        (
-          <div>
-            <AddQuestionForm loggedInUser = {loggedInUser}  /> 
-            <h1>These are all of the questions you've asked</h1>
-            {userQuestions.length ? <QuestionList questions={userQuestions} /> : <p>No questions</p>}
-          </div>
-        )  : (
-          <div>
-            <h1>These questions haven't been answered yet</h1>
-            {unansweredQuestions.length ? <QuestionList questions={unansweredQuestions} /> : <p>No questions</p>}
-            <h1>These all of the questions you've already answered</h1>
-            {userQuestions.length ? <QuestionList questions={userQuestions} /> : <p>No questions</p>}
-          </div>
-        )}
-
-      </div>
-    )
+  render() {
+    const { loggedInUser, userQuestions, userAnswers, unansweredQuestions, loading } = this.state;
+    if (loading) return (<div>Loading</div>)
+    else {
+      return (
+        <div>
+          <h1>Welcome, {loggedInUser.first_name}</h1>
+          {loggedInUser.questioner ?
+            (
+              <div>
+                <AddQuestionForm loggedInUser={loggedInUser} />
+                <h1>These are all of the questions you've asked</h1>
+                {userQuestions.length ? <QuestionList questions={userQuestions} /> : <p>No questions</p>}
+              </div>
+            ) : (
+              <div>
+                <h1>These questions haven't been answered yet</h1>
+                {unansweredQuestions.length ? <QuestionList questions={unansweredQuestions} /> : <p>No questions</p>}
+                <h1>These all of the questions you've already answered</h1>
+                {userAnswers.length ? <QuestionList questions={userAnswers} /> : <p>No questions</p>}
+              </div>
+            )}
+        </div>
+      )
+    }
   }
 }
 
