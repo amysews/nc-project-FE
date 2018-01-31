@@ -3,7 +3,8 @@ import React from 'react';
 class AudioRecording extends React.Component {
 	state = {
 		audioRecorder: {},
-		src: null
+		src: null,
+		isToggleOn: true
 	}
 
 	componentDidMount() {
@@ -45,15 +46,28 @@ class AudioRecording extends React.Component {
 		this.state.audioRecorder.stop();
 	}
 
+	
+
+	handleClick (e) {
+		this.setState(prevState => ({
+			isToggleOn: !prevState.isToggleOn
+		}));
+		this.state.isToggleOn ? this.startRecording(e) : this.stopRecording(e)
+	}
 
 	render() {
 		const { src } = this.state;
+		const handleClick = this.handleClick.bind(this)
+		let buttonToggle = ''
+		this.state.isToggleOn ? buttonToggle = "button is-success is-rounded" : buttonToggle = "button is-dark button is-rounded"
+		
 		return (
 			<div>
-				<button className="button is-danger is-rounded" onClick={this.startRecording} >Start Recording</button>
-				<button className="button is-rounded" onClick={this.stopRecording} >Stop Recording</button>
+				<button onClick={handleClick} className={buttonToggle}>
+					{this.state.isToggleOn ? 'Start Recording' : 'Stop Recording'}
+				</button>
+	
 
-				<br />
 				<audio controls src={src} />
 
 			</div>
