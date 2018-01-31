@@ -41,12 +41,18 @@ nav {
     width: 80%;   
 }
 
-#add-question, #add-answer, #question-full {
+#add-question, #add-answer, #question-full, #login-box {
     width: 60%;
     margin: 40px auto;
     border: 1px solid #e7e5e5;
     border-radius: 5px;
     padding: 30px;
+}
+
+#login-box {
+    width: 40%;
+    padding: 30px 160px;
+    text-align: center;
 }
 
 #question-list, #answer-list {
