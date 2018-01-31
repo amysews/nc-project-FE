@@ -40,10 +40,10 @@ class Dashboard extends React.Component {
               </div>
             ) : (
               <div>
+                <h1>These are all of the questions you've already answered</h1>
+                {userAnswers.length ? <QuestionList questions={userAnswers} /> : <p>No questions</p>}
                 <h1>These questions haven't been answered yet</h1>
                 {unansweredQuestions.length ? <QuestionList questions={unansweredQuestions} /> : <p>No questions</p>}
-                <h1>These all of the questions you've already answered</h1>
-                {userAnswers.length ? <QuestionList questions={userAnswers} /> : <p>No questions</p>}
               </div>
             )}
         </div>

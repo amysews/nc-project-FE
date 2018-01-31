@@ -11,14 +11,14 @@ import './styles.css';
 
 class App extends Component {
 	state = {
-		loggedInUser: {}
+		loggedInUser: null
 	}
 
   render() {
     return (
       <BrowserRouter>
 				<div>
-					<Navbar />
+					<Navbar loggedInUser={this.state.loggedInUser} />
 					<Switch>
 						<Route exact path="/" render={() => <LoginPage setAppUser={this.setAppUser} />}></Route>
 						{/* <Route exact path="/users" component={Users}></Route> */}
