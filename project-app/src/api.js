@@ -1,4 +1,5 @@
-const URL = "http://localhost:9090";
+// const URL = "http://localhost:9090";
+const URL = process.env.REACT_APP_URL;
 
 export const fetchAllQuestions = () => {
 	let questionsMetaData;
@@ -76,7 +77,7 @@ export const fetchOneQuestionAndAnswers = (id) => {
 
 export const fetchQuestioners = () => {
 	return fetch(`${URL}/rds/users`)
-		.then(buffer => buffer.json())
+		.then(buffer => {console.log(buffer);return buffer.json()})
 		.then(({ users }) => {
 			const questioners = users.filter(user => user.questioner)
 			return questioners;
