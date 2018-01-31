@@ -13,8 +13,7 @@ class AddQuestionForm extends React.Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-	
-				this.setState({userId: newProps.loggedInUser.id })
+		this.setState({ userId: newProps.loggedInUser.id })
 	}
 
 	handleIncomingAudio = (event) => {

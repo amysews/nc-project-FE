@@ -4,7 +4,6 @@ import QuestionSummary from './QuestionSummary';
 const QuestionList = ({ questions }) => {
     return (
         <div id="question-list">
-            <h1>Browse all questions</h1>
             <ul>
                 {questions.map((question, i) => {
                     return <QuestionSummary question={question} key={i} />

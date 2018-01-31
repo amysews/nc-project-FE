@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { fetchUsers } from '../api';
 
 class LoginPage extends React.Component {
@@ -20,7 +21,8 @@ class LoginPage extends React.Component {
 		e.preventDefault();
     const id = e.target.user.value;
     const user = this.state.users.filter(user => user.id == id);
-    this.props.setAppUser(user[0])
+    this.props.setAppUser(user[0]);
+    
   }
 
 
@@ -45,7 +47,7 @@ class LoginPage extends React.Component {
           </div>
           <button className="button is-success is-rounded">Login</button>
         </form>
-
+        <Link to="/dashboard" ><button>Go To Dashboard</button></Link>
       </div>
     )
   }
