@@ -35,7 +35,7 @@ class AudioRecording extends React.Component {
 
 	startRecording = (e) => {
 		e.preventDefault();
-		console.log('start the recording...');
+		console.log('start the recording...', this.state.audioRecorder);
 		this.state.audioRecorder.start();
 	}
 

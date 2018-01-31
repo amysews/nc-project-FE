@@ -20,8 +20,8 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/" render={() => <LoginPage setAppUser={this.setAppUser} />}></Route>
 						{/* <Route exact path="/users" component={Users}></Route> */}
-						<Route exact path="/questions" component={BrowsePage}></Route>
-						<Route exact path="/questions/:question_id" component={QA_Page}></Route>
+						<Route exact path="/questions" render={() => <BrowsePage loggedInUser = {this.state.loggedInUser}/>}></Route>
+						<Route exact path="/questions/:question_id" render={(props) => <QA_Page loggedInUser = {this.state.loggedInUser}{...props}/>}></Route>
 					</Switch>
 				</div>
 			</BrowserRouter>
@@ -32,11 +32,7 @@ class App extends Component {
 		this.setState({ loggedInUser: user })
 	}
 
-	// MyLoginPage = (props) => {
-	// 	return (
-	// 		<LoginPage setAppUser={this.setAppUser} />
-	// 	)
-	// }
+
 }
 
 
