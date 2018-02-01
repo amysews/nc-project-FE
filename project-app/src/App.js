@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import BrowsePage from './pages/BrowsePage';
 import QA_Page from './pages/QA_Page';
 import fourOFour from './components/fourOFour'
+import UserProfile from './pages/UserProfile'
 import 'bulma/css/bulma.css';
 import './styles.css';
 
@@ -24,6 +25,7 @@ class App extends Component {
 						<Route exact path="/dashboard" render={() => <Dashboard loggedInUser = {this.state.loggedInUser}/>}></Route>
 						<Route exact path="/questions" render={() => <BrowsePage loggedInUser = {this.state.loggedInUser}/>}></Route>
 						<Route exact path="/questions/:question_id" render={(props) => <QA_Page loggedInUser = {this.state.loggedInUser}{...props}/>}></Route>
+						<Route exact path="/userprofile/:id" render={(props)=> <UserProfile {...props}/>}/> 
 						<Route component={fourOFour}></Route>
 					</Switch>
 				</div>
