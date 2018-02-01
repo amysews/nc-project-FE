@@ -6,7 +6,8 @@ class AddAnswerForm extends React.Component {
 	state = {
 		addAudio: null,
 		addText: null,
-		submitted: false,
+		processing: false,
+		receivedAnswer: null,
 		userId: '',
 		answer: '',
 		questionId: '',
@@ -15,17 +16,17 @@ class AddAnswerForm extends React.Component {
 
 	componentWillReceiveProps(newProps) {
 
-		this.setState({ questionId: newProps.questionId, userId: newProps.loggedInUser.id })
+		this.setState({ questionId: newProps.questionId, userId: newProps.loggedInUser.id, receivedAnswer: newProps.receivedAnswer })
 	}
 
 	handleIncomingAudio = (event) => {
 		this.setState({ answer: [event.data] })
 	}
 
-	// This should be true for text input or audio input
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const { userId, answer, questionId } = this.state;
+		// Error handling - checks all inputs are present
 		if (!userId) {
 			this.setState({ errorMsg: "No user selected - please login again" }, () => { return });
 		} else if (!answer) {
@@ -33,18 +34,21 @@ class AddAnswerForm extends React.Component {
 		} else if (!questionId) {
 			return;
 		} else {
-			return postAnswerMetadata(userId, questionId)
-				.then(({ answerId }) => {
-					return postToBucket(answer, answerId, 'a')
-				})
-				.then(data => {
-					console.log(data)
-					this.setState({ submitted: true }); // put this on an if statement for success
-				})
-				.catch(console.error)
+			this.startProcessingAnswer(answer, userId, questionId)
+			this.setState({ processing: true })
 		}
 	}
 
+	startProcessingAnswer = (answer, userId, questionId) => {
+		return postAnswerMetadata(userId, questionId)
+		.then(({ answerId }) => {
+			return Promise.all([postToBucket(answer, answerId, 'a'), answerId])
+		})
+		.then(([data, answerId]) => {
+			this.props.checkTextInBucket(answerId)
+		})
+		.catch(console.error)
+	}
 
 	handleAnswerChange = (event) => {
 		this.setState({ answer: event.target.value, errorMsg: '' })
@@ -57,7 +61,7 @@ class AddAnswerForm extends React.Component {
 	}
 
 	render() {
-		const { addAudio, addText, submitted, answer, errorMsg } = this.state;
+		const { addAudio, addText, processing, receivedAnswer, answer, errorMsg } = this.state;
 		return (
 			<div>
 				<form id="add-answer" onSubmit={this.handleSubmit}>
@@ -100,7 +104,8 @@ class AddAnswerForm extends React.Component {
 					<div className="field">
 						<div className="control">
 							<button className="button is-link" type="submit">Submit</button>
-							<span>{submitted ? 'Answer submitted' : null}</span>
+							{/* <span>{processing ? 'Processing answer' : null}</span> */}
+							<span>{receivedAnswer ? 'Answer received' : processing ? 'Processing answer' : null}</span>
 							<span>{errorMsg ? errorMsg : null}</span>
 						</div>
 					</div>
