@@ -1,17 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ loggedInUser }) => {
     return (
-        <nav>
-            <div className="container">
+        <nav className="navbar-menu">
+            <div className="container navbar-start">
                 <NavLink to="/questions" className="nav-item" >Questions</NavLink>
-                <NavLink to="/" className="nav-item" >Login</NavLink>
+                <NavLink to="/dashboard" className="nav-item" >{loggedInUser ? "Personal Dashboard" : null}</NavLink>
             </div>
-            {/* <NavLink to="/users"> Users</NavLink>
-            {/* {'  |  '}
-            <NavLink to="/submitQuestion">Submit a Question</NavLink> */}
-
+            <div className="container navbar-end">
+                <NavLink to="/" className="nav-item" >{loggedInUser ? `Hi ${loggedInUser.first_name}, not you? Click here to change user` : "Login"}</NavLink>
+            </div>
         </nav>
 
     )

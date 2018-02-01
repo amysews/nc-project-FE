@@ -75,9 +75,40 @@ export const fetchOneQuestionAndAnswers = (id) => {
 		})
 }
 
+export const fetchUserQAs = (user) => {
+	let data = { userQuestions: [], unansweredQuestions: [], userAnswers: [] };
+	return fetchAllQuestions()
+		.then(questions => {
+			// fetch all of the questions this user has asked (if any)
+			data.userQuestions = questions.filter(question => question.user_id == user.id);
+
+			// fetch all of the questions unanswered so far (if any)
+			data.unansweredQuestions = questions.filter(question => !question.answered)
+
+			// fetch all of the questions this user has answered
+			// promises = fetch() // ***** NEED NEW END POINT IN THE SERVER GIVING ME ALL OF THE ANSWERS - OR BETTER YET ALL THE ANSWERS FOR A GIVEN USER ***** 
+			return fetch(`${URL}/rds/answers/${user.id}`).then(buffer => buffer.json());
+		})
+		.then(userQuestionsFromAnswers => {
+			data.userAnswers = userQuestionsFromAnswers.questions;
+			const promises = data.userAnswers.map(question => {
+				// then fetch the text file out of the bucket using the Q_ID
+				return fetch(`${URL}/s3/textstorage?keyName=q${question.id}`).then(buffer => buffer.json())
+			})
+			return Promise.all(promises);
+		})
+		.then(questionText => {
+			data.userAnswers.forEach((question, i) => {
+				data.userAnswers[i]["text"] = questionText[i].text
+			})
+			
+			return data;
+		})
+}
+
 export const fetchQuestioners = () => {
 	return fetch(`${URL}/rds/users`)
-		.then(buffer => {console.log(buffer);return buffer.json()})
+		.then(buffer => { console.log(buffer); return buffer.json() })
 		.then(({ users }) => {
 			const questioners = users.filter(user => user.questioner)
 			return questioners;
@@ -104,7 +135,7 @@ export const fetchUsers = () => {
 export const postQuestionMetadata = (topic, user_id) => {
 	return fetch(`${URL}/rds/questions`, {
 		method: 'PUT',
-		body: JSON.stringify({ user_id, topic, keywords: topic, answered: 1 }),
+		body: JSON.stringify({ user_id, topic, keywords: topic }),
 		headers: new Headers({
 			'Content-Type': 'application/json'
 		})
@@ -123,7 +154,7 @@ export const postAnswerMetadata = (user_id, question_id) => {
 		.then(res => res.json())
 }
 
-export const postToBucket = (data, id, type) => { 
+export const postToBucket = (data, id, type) => {
 	if (typeof data === "string") { // inputted as text
 		return fetch(`${URL}/s3/textstorage`, {
 			method: 'PUT',

@@ -17,7 +17,8 @@ class BrowsePage extends Component {
 		const { questions } = this.state;
 		return (
 			<div className="container">
-				{this.props.loggedInUser.questioner ?<AddQuestionForm loggedInUser = {this.props.loggedInUser} /> :null}
+				{this.props.loggedInUser && this.props.loggedInUser.questioner ?<AddQuestionForm loggedInUser = {this.props.loggedInUser} /> :null}
+				<h1>Browse all questions</h1>
 				<QuestionList questions={questions} />
 			</div>
 		)
