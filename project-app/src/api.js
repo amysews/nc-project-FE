@@ -7,7 +7,6 @@ export const fetchAllQuestions = () => {
 		.then(resBuffer => resBuffer.json())
 		.then(data => {
 			questionsMetaData = data.questions;
-			console.log(questionsMetaData);
 			const promises = questionsMetaData.filter(question => question.text_in_bucket).map(question => {
 				// then fetch the text file out of the bucket using the Q_ID
 				return fetch(`${URL}/s3/textstorage?keyName=q${question.id}`).then(buffer => buffer.json())
@@ -80,13 +79,12 @@ export const fetchUserQAs = (user) => {
 	return fetchAllQuestions()
 		.then(questions => {
 			// fetch all of the questions this user has asked (if any)
-			data.userQuestions = questions.filter(question => question.user_id == user.id);
+			data.userQuestions = questions.filter(question => question.user_id === user.id);
 
 			// fetch all of the questions unanswered so far (if any)
 			data.unansweredQuestions = questions.filter(question => !question.answered)
 
-			// fetch all of the questions this user has answered
-			// promises = fetch() // ***** NEED NEW END POINT IN THE SERVER GIVING ME ALL OF THE ANSWERS - OR BETTER YET ALL THE ANSWERS FOR A GIVEN USER ***** 
+			// fetch all of the questions this user has answered 
 			return fetch(`${URL}/rds/answers/${user.id}`).then(buffer => buffer.json());
 		})
 		.then(userQuestionsFromAnswers => {
@@ -103,6 +101,23 @@ export const fetchUserQAs = (user) => {
 			})
 			
 			return data;
+		})
+}
+
+export const fetchOneAnswer = (id) => {
+	let answer;
+	return fetch(`${URL}/rds/answers?answerId=${id}`).then(buffer => buffer.json())
+		.then(answerMetaData => {
+			answer = answerMetaData.answer;
+			return fetch(`${URL}/s3/textstorage?keyName=a${answer.id}`).then(buffer => buffer.json())
+		})
+		.then(answerText => {
+			answer.text = answerText.text;
+			return fetch(`${URL}/rds/users/${answer.user_id}`).then(buffer => buffer.json())
+		})
+		.then(userMetaData => {
+			answer.user = userMetaData;
+			return answer;
 		})
 }
 
