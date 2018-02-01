@@ -12,6 +12,10 @@ class AddQuestionForm extends React.Component {
 		question: ''
 	}
 
+	componentDidMount () {
+		this.setState({ userId: this.props.loggedInUser.id })
+	}
+
 	componentWillReceiveProps(newProps) {
 		this.setState({ userId: newProps.loggedInUser.id })
 	}
