@@ -1,3 +1,7 @@
+body {
+    background-color:#fafafa;
+}
+
 h1 {
     font-size: 2em;
     margin-bottom: 20px;
@@ -15,6 +19,7 @@ blockquote {
 }
 
 nav {
+
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -77,4 +82,16 @@ nav {
 
 .text-center {
     text-align: center
+}
+
+#add-question {
+background-color: white
+}
+
+#question-summary {
+    background-color: white
+}
+
+#navbar-menu {
+background-color: white
 }
