@@ -8,13 +8,14 @@ class AddAnswerForm extends React.Component {
 		addText: null,
 		submitted: false,
 		userId: '',
-    answer: '',
-    questionId: ''
+		answer: '',
+		questionId: '',
+		errorMsg: ''
 	}
 
-	componentWillReceiveProps (newProps) {
-	
-	this.setState({ questionId: newProps.questionId, userId: newProps.loggedInUser.id })
+	componentWillReceiveProps(newProps) {
+
+		this.setState({ questionId: newProps.questionId, userId: newProps.loggedInUser.id })
 	}
 
 	handleIncomingAudio = (event) => {
@@ -24,22 +25,29 @@ class AddAnswerForm extends React.Component {
 	// This should be true for text input or audio input
 	handleSubmit = (event) => {
 		event.preventDefault();
-		const { userId,  answer, questionId } = this.state;
-		if (!userId || !answer) return;
-		return postAnswerMetadata(userId, questionId)
-			.then(({ answerId }) => {
-				return postToBucket(answer, answerId, 'a')
-			})
-			.then(data => {
-				console.log(data)
-				this.setState({ submitted: true }); // put this on an if statement for success
-			})
-			.catch(console.error)
+		const { userId, answer, questionId } = this.state;
+		if (!userId) {
+			this.setState({ errorMsg: "No user selected - please login again" }, () => { return });
+		} else if (!answer) {
+			this.setState({ errorMsg: "Please add either text or audio recording of your answer" }, () => { return });
+		} else if (!questionId) {
+			return;
+		} else {
+			return postAnswerMetadata(userId, questionId)
+				.then(({ answerId }) => {
+					return postToBucket(answer, answerId, 'a')
+				})
+				.then(data => {
+					console.log(data)
+					this.setState({ submitted: true }); // put this on an if statement for success
+				})
+				.catch(console.error)
+		}
 	}
 
-	
+
 	handleAnswerChange = (event) => {
-		this.setState({ answer: event.target.value })
+		this.setState({ answer: event.target.value, errorMsg: '' })
 	}
 	useVoice = () => {
 		this.setState({ addAudio: true, addText: false })
@@ -49,7 +57,7 @@ class AddAnswerForm extends React.Component {
 	}
 
 	render() {
-		const {addAudio, addText, submitted, answer } = this.state;
+		const { addAudio, addText, submitted, answer, errorMsg } = this.state;
 		return (
 			<div>
 				<form id="add-answer" onSubmit={this.handleSubmit}>
@@ -92,10 +100,11 @@ class AddAnswerForm extends React.Component {
 					<div className="field">
 						<div className="control">
 							<button className="button is-link" type="submit">Submit</button>
+							<span>{submitted ? 'Answer submitted' : null}</span>
+							<span>{errorMsg ? errorMsg : null}</span>
 						</div>
 					</div>
 				</form>
-				<span>{submitted ? 'Answer submitted' : null}</span>
 			</div>
 		)
 	}
