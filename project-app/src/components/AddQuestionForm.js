@@ -9,10 +9,11 @@ class AddQuestionForm extends React.Component {
 		submitted: false,
 		userId: '',
 		topic: '',
-		question: ''
+		question: '',
+		errorMsg: ''
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		this.setState({ userId: this.props.loggedInUser.id })
 	}
 
@@ -28,23 +29,32 @@ class AddQuestionForm extends React.Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const { userId, topic, question } = this.state;
-		if (!userId || !topic || !question) return;
-		return postQuestionMetadata(topic, userId)
-			.then(({ questionId }) => {
-				return postToBucket(question, questionId, 'q')
-			})
-			.then(data => {
-				console.log(data)
-				this.setState({ submitted: true }); // put this on an if statement for success
-			})
-			.catch(console.error)
+
+		if (!userId) {
+			this.setState({ errorMsg: "No user selected - please login again" }, () => { return });
+		} else if (!question) {
+			this.setState({ errorMsg: "Please add either text or audio recording of your question" }, () => { return });
+		} else if (!topic) {
+			this.setState({ errorMsg: "No topic selected - please select one from the dropdown" }, () => { return });
+		} else {
+			return postQuestionMetadata(topic, userId)
+				.then(({ questionId }) => {
+					return postToBucket(question, questionId, 'q')
+				})
+				.then(data => {
+					console.log(data)
+					this.setState({ submitted: true, errorMsg: '' }); // put this on an if statement for success
+				})
+				.catch(console.error)
+		}
+
 	}
 
 	handleQuestionChange = (event) => {
-		this.setState({ question: event.target.value })
+		this.setState({ question: event.target.value, errorMsg: '' })
 	}
 	handleTopicChange = (event) => {
-		this.setState({ topic: event.target.value })
+		this.setState({ topic: event.target.value, errorMsg: '' })
 	}
 	useVoice = () => {
 		this.setState({ addAudio: true, addText: false })
@@ -55,7 +65,7 @@ class AddQuestionForm extends React.Component {
 	}
 
 	render() {
-		const { addAudio, addText, submitted, topic, question } = this.state;
+		const { addAudio, addText, submitted, topic, question, errorMsg } = this.state;
 		return (
 			<div>
 				<form id="add-question" onSubmit={this.handleSubmit}>
@@ -116,10 +126,11 @@ class AddQuestionForm extends React.Component {
 					<div className="field">
 						<div className="control">
 							<button className="button is-link" type="submit">Submit</button>
+							<span>{submitted ? 'Question submitted' : null}</span>
+							<span>{errorMsg ? errorMsg : null}</span>
 						</div>
 					</div>
 				</form>
-				<span>{submitted ? 'Question submitted' : null}</span>
 			</div>
 		)
 	}
