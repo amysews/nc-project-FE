@@ -183,6 +183,15 @@ export const postToBucket = (data, id, type) => {
 	}
 }
 
+
+export const fetchUser = (id) => {
+	return fetch(`${URL}/rds/users/'${id}`)
+		.then(buffer => buffer.json())
+		.then(({ user }) => {
+			return user;
+		})
+}
+
 export const getSignedURL = (prefix, id) => {
 	return fetch(`${URL}/s3/sign?objectName=${id}&prefix=${prefix}`)
 }
