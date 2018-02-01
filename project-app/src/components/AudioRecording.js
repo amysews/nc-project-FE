@@ -66,8 +66,6 @@ class AudioRecording extends React.Component {
 				<button onClick={handleClick} className={buttonToggle}>
 					{this.state.isToggleOn ? 'Start Recording' : 'Stop Recording'}
 				</button>
-	
-
 				<audio controls src={src} />
 
 			</div>
