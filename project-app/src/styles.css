@@ -2,18 +2,24 @@ body {
     background-color:#fafafa;
 }
 
+html {
+    background-color: #fafafa;
+    background-size: cover;
+}
+
 h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
+    font-size: 1.5em;
+    /* margin-bottom: 20px; */
 }
 
 blockquote {
-    font-style: italic;
+    font-weight: bold;
     font-size: 1.3em;
+    margin-bottom: 10px;    
+    color: black;
 }
 
 .subtitle {
-    margin-top: 10px;
     font-size: 1em;
     color: grey;
 }
@@ -24,9 +30,15 @@ nav {
     padding: 0;
     overflow: hidden;
     border: 1px solid #e7e7e7;
-    background-color: #f3f3f3;
+    background-color: white;
     top: 0;
     width: 100%;
+    font-weight: bold;
+}
+
+#navbar-logo {
+    height: 45px;
+    margin: 5px;
 }
 
 .nav-item {
@@ -39,14 +51,29 @@ nav {
 }
 
 .nav-item:hover {
-    background-color: #dfdede;
+    background-color: #fafafa;
+    color: rgb(155, 9, 9);
 }
 
 .container {
-    width: 80%;   
+    width: 80%;
+    margin: 30px auto; 
 }
 
-#add-question, #add-answer, #question-full, #login-box {
+.forms {
+    width: 60%;
+    margin: 40px auto;
+background-color: white;  
+}
+
+.inside-forms {
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #e7e5e5;
+    
+}
+
+#add-question, #question-full, #login-box {
     width: 60%;
     margin: 40px auto;
     border: 1px solid #e7e5e5;
@@ -59,18 +86,22 @@ nav {
     padding: 30px 160px;
     text-align: center;
 }
-
-#question-list, #answer-list {
-    width: 80%;
-    margin: 10px auto;
-}
  
 #question-summary, .answer {
     border: 1px solid #e7e5e5;
-    border-radius: 5px;
-    padding: 30px;
-    /* width: 80%; */
-    margin: 10px auto;
+    padding: 20px;
+}
+
+#question-summary:hover {
+    background-color: #fafafa;
+}
+
+#add-question, #add-answer, #question-full, #login-box, #question-summary, .answer, .headings  {
+    background-color: white;
+}
+
+#question-list {
+    margin-bottom: 20px;
 }
 
 .wrapper404 {
@@ -100,4 +131,37 @@ background-color: white
     text-align: center;
     margin-top: 100px;
     padding: 20px;
+}
+
+.headings {
+    border: 1px solid #e7e5e5;
+    padding: 20px;
+    color: rgb(155, 9, 9);
+    font-weight: bold;
+    border-bottom: 3px solid rgb(155, 9, 9);
+}
+
+.comment {
+    color: grey;
+}
+
+Link {
+    display: inline;
+}
+
+.select {
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.selected-nav {
+    border-bottom: 3px solid rgb(155, 9, 9);
+    color: rgb(155, 9, 9);
+}
+
+#welcome {
+    font-size: 2.1em;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }

@@ -26,7 +26,7 @@ class BrowsePage extends Component {
 		return (
 			<div className="container">
 				{this.props.loggedInUser && this.props.loggedInUser.questioner ?<AddQuestionForm loggedInUser = {this.props.loggedInUser} /> :null}
-				<h1>Browse all questions</h1>
+				<h1 className="headings">Browse Questions</h1>
 				<QuestionList questions={questions} />
 			</div>
 		)

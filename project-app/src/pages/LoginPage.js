@@ -30,15 +30,14 @@ class LoginPage extends React.Component {
     const { users, userId, loading } = this.state;
     return (
       <div id="login-box">
-        <h1>Login</h1>
+        <img src="joyLogo.png" id="logo" />
         {loading ? <OnLoad /> : (
           <form onSubmit={this.handleSubmit}>
             <div className="field">
-              <label className="label">User:</label>
               <div className="control">
                 <div className="select">
                   <select name="user" onChange={this.handleUserChange} value={userId}>
-                    <option value="" disabled>Select your option</option>
+                    <option value="" disabled>Select user</option>
                     {users.map((user, i) => {
                       return <option key={i} value={user.id}>{user.first_name} {user.surname}</option>
                     })}
