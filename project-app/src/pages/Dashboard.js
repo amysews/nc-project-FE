@@ -1,6 +1,7 @@
 import React from 'react';
 import AddQuestionForm from '../components/AddQuestionForm';
 import QuestionList from '../components/QuestionList';
+import OnLoad from '../components/OnLoad';
 import { fetchAllQuestions, fetchUserQAs } from '../api';
 
 class Dashboard extends React.Component {
@@ -26,7 +27,12 @@ class Dashboard extends React.Component {
 
   render() {
     const { loggedInUser, userQuestions, userAnswers, unansweredQuestions, loading } = this.state;
-    if (loading) return (<div>Loading</div>)
+    if (loading) return (
+      <div className="loadingPage">
+        <OnLoad />
+        <p>Fetching your dashboard...</p>
+      </div>
+    )
     else {
       return (
         <div>
