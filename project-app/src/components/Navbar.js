@@ -9,7 +9,7 @@ const Navbar = ({ loggedInUser }) => {
                 <NavLink to="/dashboard" className="nav-item" >{loggedInUser ? "Personal Dashboard" : null}</NavLink>
             </div>
             <div className="container navbar-end">
-                <NavLink to="/" className="nav-item" >{loggedInUser ? `Hi ${loggedInUser.first_name}, not you? Click here to change user` : "Login"}</NavLink>
+                <NavLink to="/" onClick={() => this.props.setAppUser(null)} className="nav-item" >{loggedInUser ? `Hi ${loggedInUser.first_name}, not you? Click here to change user` : "Login"}</NavLink>
             </div>
         </nav>
 
