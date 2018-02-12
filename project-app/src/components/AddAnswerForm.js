@@ -4,8 +4,8 @@ import { postToBucket, postAnswerMetadata } from '../api';
 
 class AddAnswerForm extends React.Component {
 	state = {
-		addAudio: null,
-		addText: null,
+		addAudio: true,
+		addText: false,
 		processing: false,
 		receivedAnswer: null,
 		userId: '',
@@ -41,13 +41,13 @@ class AddAnswerForm extends React.Component {
 
 	startProcessingAnswer = (answer, userId, questionId) => {
 		return postAnswerMetadata(userId, questionId)
-		.then(({ answerId }) => {
-			return Promise.all([postToBucket(answer, answerId, 'a'), answerId])
-		})
-		.then(([data, answerId]) => {
-			this.props.checkTextInBucket(answerId)
-		})
-		.catch(console.error)
+			.then(({ answerId }) => {
+				return Promise.all([postToBucket(answer, answerId, 'a'), answerId])
+			})
+			.then(([data, answerId]) => {
+				this.props.checkTextInBucket(answerId)
+			})
+			.catch(console.error)
 	}
 
 	handleAnswerChange = (event) => {
@@ -63,27 +63,33 @@ class AddAnswerForm extends React.Component {
 	render() {
 		const { addAudio, addText, processing, receivedAnswer, answer, errorMsg } = this.state;
 		return (
-			<div>
-				<form id="add-answer" onSubmit={this.handleSubmit}>
-					<h1>Add a new answer:</h1>
+			<div className="forms">
+				<h1 className="headings">Add a new answer:</h1>
+				<form className="inside-forms" onSubmit={this.handleSubmit}>
 
 					<div className="field">
 						<div className="control">
-							<span onClick={this.useVoice} >Add with voice</span>
-							{'  |  '}
-							<span onClick={this.useText} >Add with text</span>
+							<a className="button is-medium" disabled={addAudio ? true : false}>
+								<span onClick={this.useVoice}  >Add with voice</span>
+								<span className="icon is-medium">
+									<i className="fas fa-microphone"></i>
+								</span>
+							</a>
+
+							{'    '}
+							<a className="button is-medium" disabled={addText ? true : false}>
+								<span className="icon is-medium">
+									<i className="far fa-file-alt"></i>
+								</span>
+								<span onClick={this.useText} >Add with text</span>
+							</a>
+
 						</div>
 					</div>
-
-					<div>
-						<p>You are logged in as {this.props.loggedInUser.first_name} {this.props.loggedInUser.surname}</p>
-					</div>
-
-
+					
 					{addText ?
 						(
 							<div className="field">
-								<label className="label">Answer:</label>
 								<div className="control">
 									<textarea className="textarea" name="answerText" placeholder="Type your answer here" value={answer} onChange={this.handleAnswerChange}></textarea>
 								</div>
@@ -93,17 +99,15 @@ class AddAnswerForm extends React.Component {
 					{addAudio ?
 						(
 							<div className="field">
-								<label className="label">Answer:</label>
 								<div className="control">
 									<AudioRecording handleIncomingAudio={this.handleIncomingAudio} />
 								</div>
 							</div>
 						) : null}
 
-
 					<div className="field">
 						<div className="control">
-							<button className="button is-link" type="submit">Submit</button>
+							<button className="button is-link is-rounded" type="submit">Submit</button>
 							{/* <span>{processing ? 'Processing answer' : null}</span> */}
 							<span>{receivedAnswer ? 'Answer received' : processing ? 'Processing answer' : null}</span>
 							<span>{errorMsg ? errorMsg : null}</span>

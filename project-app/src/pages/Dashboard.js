@@ -1,6 +1,7 @@
 import React from 'react';
 import AddQuestionForm from '../components/AddQuestionForm';
 import QuestionList from '../components/QuestionList';
+import OnLoad from '../components/OnLoad';
 import { fetchAllQuestions, fetchUserQAs } from '../api';
 
 class Dashboard extends React.Component {
@@ -26,23 +27,28 @@ class Dashboard extends React.Component {
 
   render() {
     const { loggedInUser, userQuestions, userAnswers, unansweredQuestions, loading } = this.state;
-    if (loading) return (<div>Loading</div>)
+    if (loading) return (
+      <div className="loadingPage">
+        <OnLoad />
+        <p>Fetching your dashboard...</p>
+      </div>
+    )
     else {
       return (
-        <div>
-          <h1>Welcome, {loggedInUser.first_name}</h1>
+        <div className="container">
+          <h1 id="welcome">Welcome, {loggedInUser.first_name}</h1>
           {loggedInUser.questioner ?
             (
               <div>
                 <AddQuestionForm loggedInUser={loggedInUser} />
-                <h1>These are all of the questions you've asked</h1>
+                <h1 className="headings">These are all of the questions you've asked</h1>
                 {userQuestions.length ? <QuestionList questions={userQuestions} /> : <p>No questions</p>}
               </div>
             ) : (
               <div>
-                <h1>These are all of the questions you've already answered</h1>
+                <h1 className="headings">These are all of the questions you've already answered</h1>
                 {userAnswers.length ? <QuestionList questions={userAnswers} /> : <p>No questions</p>}
-                <h1>These questions haven't been answered yet</h1>
+                <h1 className="headings">These questions haven't been answered yet</h1>
                 {unansweredQuestions.length ? <QuestionList questions={unansweredQuestions} /> : <p>No questions</p>}
               </div>
             )}

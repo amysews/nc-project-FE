@@ -4,11 +4,11 @@ import { postToBucket, postQuestionMetadata } from '../api';
 
 class AddQuestionForm extends React.Component {
 	state = {
-		addAudio: null,
-		addText: null,
+		addAudio: true,
+		addText: false,
 		submitted: false,
 		userId: '',
-		topic: '',
+		topic: "Past",
 		question: '',
 		errorMsg: ''
 	}
@@ -53,9 +53,7 @@ class AddQuestionForm extends React.Component {
 	handleQuestionChange = (event) => {
 		this.setState({ question: event.target.value, errorMsg: '' })
 	}
-	handleTopicChange = (event) => {
-		this.setState({ topic: event.target.value, errorMsg: '' })
-	}
+
 	useVoice = () => {
 		this.setState({ addAudio: true, addText: false })
 	}
@@ -66,31 +64,34 @@ class AddQuestionForm extends React.Component {
 
 	render() {
 		const { addAudio, addText, submitted, topic, question, errorMsg } = this.state;
-		return (
-			<div>
-				<form id="add-question" onSubmit={this.handleSubmit}>
-					<h1>Add a new question</h1>
 
+		return (
+			<div className="forms">
+					<h1 className="headings">Add a new question</h1>
+				<form className="inside-forms" onSubmit={this.handleSubmit}>
 					<div className="field">
 						<div className="control">
-							<span onClick={this.useVoice} >Add with voice</span>
-							{'  |  '}
-							<span onClick={this.useText} >Add with text</span>
+							<a className="button is-medium" disabled={addAudio ? true : false}>
+								<span onClick={this.useVoice}  >Add with voice</span>
+								<span className="icon is-medium">
+									<i className="fas fa-microphone"></i>
+								</span>
+							</a>
+
+							{'    '}
+							<a className="button is-medium" disabled={addText ? true : false}>
+								<span className="icon is-medium">
+									<i className="far fa-file-alt"></i>
+								</span>
+								<span onClick={this.useText} >Add with text</span>
+							</a>
+
 						</div>
 					</div>
-
-
-
-					<div>
-						<p>You are logged in as {this.props.loggedInUser.first_name} {this.props.loggedInUser.surname}</p>
-					</div>
-
-
 
 					{addText ?
 						(
 							<div className="field">
-								<label className="label">Question:</label>
 								<div className="control">
 									<textarea className="textarea" name="questionText" placeholder="Type your question here" value={question} onChange={this.handleQuestionChange}></textarea>
 								</div>
@@ -100,7 +101,6 @@ class AddQuestionForm extends React.Component {
 					{addAudio ?
 						(
 							<div className="field">
-								<label className="label">Question:</label>
 								<div className="control">
 									<AudioRecording handleIncomingAudio={this.handleIncomingAudio} />
 								</div>
@@ -109,23 +109,8 @@ class AddQuestionForm extends React.Component {
 
 
 					<div className="field">
-						<label className="label">Topic:</label>
 						<div className="control">
-							<div className="select">
-								<select name="topic" onChange={this.handleTopicChange} value={topic}>
-									<option value="" disabled>Select your option</option>
-									<option value="Past">Past</option>
-									<option value="Advice">Advice</option>
-									<option value="Today">Today</option>
-								</select>
-							</div>
-						</div>
-					</div>
-
-
-					<div className="field">
-						<div className="control">
-							<button className="button is-link" type="submit">Submit</button>
+							<button className="button is-link is-rounded" type="submit">Submit</button>
 							<span>{submitted ? 'Question submitted' : null}</span>
 							<span>{errorMsg ? errorMsg : null}</span>
 						</div>

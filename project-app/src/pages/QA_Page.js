@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import QuestionFull from '../components/QuestionFull';
 import AddAnswerForm from '../components/AddAnswerForm';
 import AnswerList from '../components/AnswerList';
+import OnLoad from '../components/OnLoad';
 import { fetchOneQuestionAndAnswers, fetchOneAnswer } from '../api';
 
 class QA_Page extends Component {
@@ -10,12 +11,13 @@ class QA_Page extends Component {
 		answers: [],
 		timer: null,
 		counter: 0,
-		receivedAnswer: false
+		receivedAnswer: false,
+		loading: true
 	}
 
 	componentDidMount() {
 		fetchOneQuestionAndAnswers(this.props.match.params.question_id)
-			.then(({ question, answers }) => this.setState({ question: question, answers: answers }))
+			.then(({ question, answers }) => this.setState({ question: question, answers: answers, loading: false }))
 	}
 
 	// function that gets passed to AddAnswerForm which then has access to answerId (where the new answer has been inserted) this changes state inside QA_Page - updating answers, which then forces a re-render of AnswerList
@@ -45,8 +47,14 @@ class QA_Page extends Component {
 	}
 
 	render() {
-		const { question, answers, receivedAnswer } = this.state;
+		const { question, answers, receivedAnswer, loading } = this.state;
 
+		if (loading) return (
+			<div className="loadingPage">
+			<OnLoad />
+			<p>Fetching answers...</p>
+		</div>
+		)
 		return (
 			<div className="container">
 				<QuestionFull question={question} />

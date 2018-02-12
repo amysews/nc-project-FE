@@ -4,7 +4,7 @@ import Answer from './Answer';
 const AnswerList = ({ answers }) => {
     return (
         <div id="answer-list">
-            <h1>Answers:</h1>
+            <h1 className="headings">Answers:</h1>
             {answers.length ? 
             <ul>
                 {answers.map((answer, i) => {
